@@ -1,12 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Characters;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 public class GameManager : MonoBehaviour
 {
 
-    [FormerlySerializedAs("GameSpeed")] public int gameSpeed;
+    public int gameSpeed;
+    public Character currentSelectCharacter;
+    public List<Character> characterList;
+
+    private void OnEnable()
+    {
+        GlobalEvents.OnCharacterSelected += SelectCharacter;
+    }
+
+    private void OnDisable()
+    {
+        GlobalEvents.OnCharacterSelected -= SelectCharacter;
+    }
     // Start is called before the first frame update
     
     void Start()
@@ -18,5 +32,16 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+    
+    private void SelectCharacter(Character character)
+    {
+        currentSelectCharacter = character;
+        Debug.Log($"Selected character: {character}");
+    }
+
+    public Character GetSelectedCharacter()
+    {
+        return currentSelectCharacter;
     }
 }
