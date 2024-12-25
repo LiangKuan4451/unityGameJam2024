@@ -23,11 +23,14 @@ namespace Characters
         {
             currentHealth = maxHealth;
             gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            gameObject.layer = LayerMask.NameToLayer("Character");
         }
 
         private void Update()
         {
-        
+            
+                SelectCharacter();
+            
         }
 
         public void Damage(int damage)
@@ -77,7 +80,24 @@ namespace Characters
             eCamp = characterCamp;
         }
 
-       
+        private void SelectCharacter()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, 0f, LayerMask.GetMask("Character"));
+                // 检查是否击中当前对象
+                if (hit.collider != null && hit.collider.gameObject == gameObject)
+                {
+                    Debug.Log("选中角色" + gameObject.name);
+                    if (eCamp == ECharacterCamp.allies)
+                    {
+                        GlobalEvents.GetCharacterSelected?.Invoke(gameObject.GetComponent<Character>());
+                    }
+                }
+            }
+        }
         
     }
 }
