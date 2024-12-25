@@ -12,6 +12,7 @@ namespace Characters
         public string nickName;
         public ECharacterCamp eCamp;
         public ECharacterFightState eFightState;
+        public ECharacterActionState eAction;
         public int maxHealth;
         public int currentHealth;
         public int moveSpeed;
@@ -26,6 +27,7 @@ namespace Characters
 
         private void Update()
         {
+        
         }
 
         public void Damage(int damage)
@@ -75,9 +77,7 @@ namespace Characters
             eCamp = characterCamp;
         }
 
-        private void OnMouseUp()
-        {
-            GlobalEvents.OnCharacterSelected?.Invoke(this);
-        }
+       
+        
     }
 }

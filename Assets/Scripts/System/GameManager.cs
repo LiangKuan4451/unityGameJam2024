@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        OnSelectAllies();
     }
     
     private void SelectCharacter(Character character)
@@ -40,8 +40,26 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Selected character: {character}");
     }
 
-    public Character GetSelectedCharacter()
+    private void OnSelectAllies()
     {
-        return currentSelectCharacter;
+    
+            Debug.Log("点击");
+            // 将鼠标位置转换为世界坐标
+           
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Debug.Log(Input.mousePosition);
+                Debug.Log(mousePosition);
+                // 使用射线检测
+                RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+                    
+                // 检查是否击中当前对象
+                if (hit.collider != null && hit.collider.gameObject == gameObject)
+                {
+                    Debug.Log("选中角色" + gameObject.name);
+                    GlobalEvents.OnCharacterSelected?.Invoke(gameObject.GetComponent<Character>());
+                }
+         
+                
+        
     }
 }
