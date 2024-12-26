@@ -18,6 +18,7 @@ namespace Characters
         public int moveSpeed;
         public List<Skill> skillList;
         public List<Buff> buffList;
+        public bool isSelect;
 
         public void Awake()
         {
@@ -94,7 +95,12 @@ namespace Characters
                     if (eCamp == ECharacterCamp.allies)
                     {
                         GlobalEvents.GetCharacterSelected?.Invoke(gameObject.GetComponent<Character>());
+                        isSelect = true;
                     }
+                }
+                else
+                {
+                    isSelect = false;
                 }
             }
         }
