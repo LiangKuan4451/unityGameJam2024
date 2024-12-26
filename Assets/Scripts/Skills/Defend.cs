@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace Skills
 {
-    [CreateAssetMenu(fileName = "Attack", menuName = "Skill/Attack", order = 1)]
-    public class Attack : Skill
+    [CreateAssetMenu(fileName = "Defend", menuName = "Skill/Defend", order = 1)]
+    public class Defend : Skill
     {
         public override void UseSkill()
         {

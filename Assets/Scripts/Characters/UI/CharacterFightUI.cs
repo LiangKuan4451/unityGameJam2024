@@ -9,5 +9,10 @@ namespace Characters.UI
         {
             character = gameObject.GetComponentInParent<Character>();
         }
+
+        void Update()
+        {
+            
+        }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Skills
 {
     
-    [CreateAssetMenu(fileName = "Skill", menuName = "Skill", order = 1)]
+
     public class Skill : ScriptableObject
     {
         [Header("技能范围")]

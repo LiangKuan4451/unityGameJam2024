@@ -12,28 +12,34 @@ namespace Characters
         public string nickName;
         public ECharacterCamp eCamp;
         public ECharacterFightState eFightState;
-        public ECharacterActionState eAction;
+        public ECharacterAction eAction;
         public int maxHealth;
         public int currentHealth;
         public int moveSpeed;
         public List<Skill> skillList;
         public List<Buff> buffList;
         public bool isSelect;
-
-        public void Awake()
+        private RoundManager roundManager;
+        public ECharacterFightState ifeFightState
         {
-            currentHealth = maxHealth;
-            gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-            gameObject.layer = LayerMask.NameToLayer("Character");
+            get => eFightState;
+            set
+            {
+                if (eFightState != value)
+                {
+                    Debug.Log("asdasdsadas");
+                    eFightState = value;
+                    GlobalEvents.GetCharacterFightState?.Invoke(gameObject.GetComponent<Character>());
+                }
+            }
+        }
+        
+        private void OnGetRoundState(RoundManager obj)
+        {
+            roundManager = obj;
         }
 
-        private void Update()
-        {
-            
-                SelectCharacter();
-            
-        }
-
+        
         public void Damage(int damage)
         {
             Debug.Log(gameObject.name + "受到伤害" + damage);
@@ -69,16 +75,22 @@ namespace Characters
             if (eCamp == ECharacterCamp.enemy) ChangeCamp(ECharacterCamp.allies);
         }
 
-        public void ChangeState(ECharacterFightState characterFightState)
+        public void ChangeFightState(ECharacterFightState characterFightState)
         {
-            Debug.Log(gameObject.name + "状态变为" + characterFightState);
-            eFightState = characterFightState;
+            Debug.Log(gameObject.name + "战斗状态变为" + characterFightState);
+            ifeFightState = characterFightState;
         }
 
         public void ChangeCamp(ECharacterCamp characterCamp)
         {
             Debug.Log(gameObject.name + "阵营变为" + characterCamp);
             eCamp = characterCamp;
+            GlobalEvents.GetCharacterSelected?.Invoke(gameObject.GetComponent<Character>());
+        }
+
+        public void ChangeAtion(ECharacterAction characterAction)
+        {
+            eAction = characterAction;
         }
 
         private void SelectCharacter()
@@ -98,12 +110,40 @@ namespace Characters
                         isSelect = true;
                     }
                 }
-                else
+                else if (hit.collider != null && hit.collider.gameObject != gameObject)
                 {
+                   
                     isSelect = false;
+                }
+                //临时
+                if (eCamp == ECharacterCamp.enemy && roundManager.ECharacterCamp == ECharacterCamp.enemy)
+                {
+                    ChangeFightState(ECharacterFightState.waitEnd);
                 }
             }
         }
-        
+        public void Awake()
+        {
+            currentHealth = maxHealth;
+            gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            gameObject.layer = LayerMask.NameToLayer("Character");
+            gameObject.tag = "Character";
+        }
+
+        private void OnEnable()
+        {
+            GlobalEvents.GetRoundState += OnGetRoundState;
+        }
+        private void OnDisable()
+        {
+            GlobalEvents.GetRoundState -= OnGetRoundState;
+        }
+       
+
+        private void Update()
+        {
+            SelectCharacter();
+            
+        }
     }
 }

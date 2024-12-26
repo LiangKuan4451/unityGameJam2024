@@ -1,9 +1,10 @@
 namespace Characters
 {
-    public enum ECharacterActionState
+    public enum ECharacterAction
     {
         idle,
         moving,
-        attacking
+        attacking,
+        die
     }
 }

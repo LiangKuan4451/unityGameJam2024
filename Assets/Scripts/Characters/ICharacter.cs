@@ -11,7 +11,8 @@ namespace Characters
         void Heal(int heal);
         void Move(Transform transform);
         void Die();
-        void ChangeState(ECharacterFightState characterFightState);
+        void ChangeFightState(ECharacterFightState characterFightState);
         void ChangeCamp(ECharacterCamp characterCamp);
+        void ChangeAtion(ECharacterAction characterAction);
     }
 }

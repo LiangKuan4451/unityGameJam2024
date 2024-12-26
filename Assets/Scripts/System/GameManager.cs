@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public int gameSpeed;
     public Character currentSelectCharacter;
-    public List<Character> characterList;
+    
 
     private void OnEnable()
     {
